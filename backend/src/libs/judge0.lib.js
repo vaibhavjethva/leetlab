@@ -1,4 +1,9 @@
 import axios from "axios";
+
+const judge0ApiKey = process.env.JUDGE0_API_KEY;
+const headersJudge0 = {
+  Authorization: `Bearer ${judge0ApiKey}`,
+};
 export const getJudge0LanguageId = (language) => {
   const languageMap = {
     PYTHON: 71,
@@ -20,6 +25,7 @@ export const pollBatchResults = async (tokens) => {
           tokens: tokens.join(","),
           base64_encoded: false,
         },
+        headersJudge0,
       }
     );
 
@@ -39,6 +45,7 @@ export const submitBatch = async (submissions) => {
     `${process.env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`,
     {
       submissions,
+      headersJudge0,
     }
   );
 
