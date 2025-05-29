@@ -1,19 +1,31 @@
 import express from "express";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+import {
+  addProblemToPlayList,
+  createPlayList,
+  deletePlayList,
+  getPlayAllListDetails,
+  getPlayListDetails,
+  removeProblemFromPlaylist,
+} from "../controllers/playlist.controller.js";
 
 const playlistRoutes = express.Router();
 
-router.get("/", authMiddleware, getPlayAllListDetails);
+playlistRoutes.get("/", authMiddleware, getPlayAllListDetails);
 
-router.get("/:playlistId", authMiddleware, getPlayListDetails);
+playlistRoutes.get("/:playlistId", authMiddleware, getPlayListDetails);
 
-router.post("/create-playlist", authMiddleware, createPlayList);
+playlistRoutes.post("/create-playlist", authMiddleware, createPlayList);
 
-router.post("/:playlistId/add-problem", authMiddleware, addProblemToPlaylist);
+playlistRoutes.post(
+  "/:playlistId/add-problem",
+  authMiddleware,
+  addProblemToPlayList
+);
 
-router.delete("/:playlistId", authMiddleware, deletePlayList);
+playlistRoutes.delete("/:playlistId", authMiddleware, deletePlayList);
 
-router.delete(
+playlistRoutes.delete(
   "/:playlistId/remove-problem",
   authMiddleware,
   removeProblemFromPlaylist
