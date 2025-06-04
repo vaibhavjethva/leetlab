@@ -564,7 +564,18 @@ public class Main {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (value) => {
-    console.log(value);
+    try {
+      setIsLoading(true);
+      const res = await axiosInstance.post("/problems/create-problem", value);
+      console.log(res.data);
+      toast.success(res.data.message || "Problem created successfully!");
+      navigation("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error creating problem");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const loadSampleData = () => {
