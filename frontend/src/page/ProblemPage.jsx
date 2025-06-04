@@ -20,11 +20,22 @@ import { useParams, Link } from "react-router-dom";
 import { useProblemStore } from "../store/useProblemStore";
 import { useExecutionStore } from "../store/useExecutionStore";
 import { getLanguageId } from "../lib/lang";
-import SubmissionResults from "../components/Submission";
+import { useSubmissionStore } from "../store/useSubmissionStore";
+import Submission from "../components/Submission";
+import SubmissionsList from "../components/SubmissionList";
 
 const ProblemPage = () => {
   const { id } = useParams();
   const { getProblemById, problem, isProblemLoading } = useProblemStore();
+
+  const {
+    submission: submissions,
+    isLoading: isSubmissionsLoading,
+    getSubmissionForProblem,
+    getSubmissionCountForProblem,
+    submissionCount,
+  } = useSubmissionStore();
+
   const [code, setCode] = useState("");
   const [activeTab, setActiveTab] = useState("description");
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
@@ -35,7 +46,8 @@ const ProblemPage = () => {
 
   useEffect(() => {
     getProblemById(id);
-  }, [id, getProblemById]);
+    getSubmissionCountForProblem(id);
+  }, [id]);
 
   useEffect(() => {
     if (problem) {
@@ -48,6 +60,12 @@ const ProblemPage = () => {
       );
     }
   }, [problem, selectedLanguage]);
+
+  useEffect(() => {
+    if (activeTab === "submissions" && id) {
+      getSubmissionForProblem(id);
+    }
+  }, [activeTab, id]);
 
   const handleLanguageChange = (e) => {
     const lang = e.target.value;
@@ -128,16 +146,11 @@ const ProblemPage = () => {
         );
       case "submissions":
         return (
-          <div className="p-4 text-center text-base-content/70">
-            No Submission
-          </div>
+          <SubmissionsList
+            submissions={submissions}
+            isLoading={isSubmissionsLoading}
+          />
         );
-      // return (
-      //   <SubmissionsList
-      //     submissions={submissions}
-      //     isLoading={isSubmissionsLoading}
-      //   />
-      // );
       case "discussion":
         return (
           <div className="p-4 text-center text-base-content/70">
@@ -199,7 +212,7 @@ const ProblemPage = () => {
               </span>
               <span className="text-base-content/30">•</span>
               <Users className="w-4 h-4" />
-              <span>{10} Submissions</span>
+              <span>{submissionCount} Submissions</span>
               <span className="text-base-content/30">•</span>
               <ThumbsUp className="w-4 h-4" />
               <span>95% Success Rate</span>
@@ -332,7 +345,7 @@ const ProblemPage = () => {
       <div className="card bg-base-100 shadow-xl mt-6">
         <div className="card-body">
           {submission ? (
-            <SubmissionResults submission={submission} />
+            <Submission submission={submission} />
           ) : (
             <>
               <div className="flex items-center justify-between mb-6">
