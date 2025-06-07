@@ -18,8 +18,10 @@ app.use(
       process.env.CLIENT_URL,
       "https://leetlab-five.vercel.app/",
       "https://elevatecode.in",
+      "https://www.elevatecode.in",
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
 app.use(express.json());
