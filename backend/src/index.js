@@ -12,7 +12,16 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(
+  cors({
+    origin: [
+      process.env.CLIENT_URL,
+      "https://leetlab-five.vercel.app/",
+      "https://elevatecode.in",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
