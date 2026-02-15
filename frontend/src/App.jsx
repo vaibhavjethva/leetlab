@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./page/HomePage.jsx";
 import LoginPage from "./page/LoginPage.jsx";
 import SignUpPage from "./page/SignUpPage.jsx";
+import ProfilePage from "./page/ProfilePage.jsx";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/useAuthStore.js";
 import { Loader } from "lucide-react";
@@ -33,6 +34,10 @@ const App = () => {
           <Route
             index
             element={authUser ? <HomePage /> : <Navigate to={"/login"} />}
+          />
+          <Route
+            path="profile"
+            element={authUser ? <ProfilePage /> : <Navigate to={"/login"} />}
           />
         </Route>
 
